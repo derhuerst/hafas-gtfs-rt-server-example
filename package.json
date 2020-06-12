@@ -1,0 +1,25 @@
+{
+	"private": true,
+	"name": "hafas-gtfs-rt-server-example",
+	"description": "Using hafas-client, hafas-monitor-trips & hafas-gtfs-rt-feed as a GTFS-RT server.",
+	"version": "1.0.0",
+	"main": "index.js",
+	"keywords": [
+		"hafas",
+		"gtfs-rt"
+	],
+	"author": "Jannis R <mail@jannisr.de>",
+	"homepage": "https://github.com/derhuerst/hafas-gtfs-rt-server-example",
+	"repository": "derhuerst/hafas-gtfs-rt-server-example",
+	"bugs": "https://github.com/derhuerst/hafas-gtfs-rt-server-example/issues",
+	"license": "ISC",
+	"engines": {
+		"node": ">=10"
+	},
+	"dependencies": {
+	},
+	"devDependencies": {
+	},
+	"scripts": {
+	}
+}
