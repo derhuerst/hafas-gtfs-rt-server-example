@@ -17,6 +17,11 @@
 		"node": ">=10"
 	},
 	"dependencies": {
+		"gtfs-rt-differential-to-full-dataset": "^1.0.0",
+		"hafas-gtfs-rt-feed": "^2.0.0",
+		"hafas-monitor-trips": "^4.0.0-alpha.2",
+		"serve-buffer": "^2.0.0",
+		"vbb-hafas": "^7.0.2"
 	},
 	"devDependencies": {
 	},
