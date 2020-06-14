@@ -6,6 +6,7 @@ const createMonitorWorker = require('hafas-monitor-trips/worker')
 const createMonitor = require('hafas-monitor-trips/orchestrator')
 const differentialToFullDataset = require('gtfs-rt-differential-to-full-dataset')
 const {createServer} = require('http')
+const computeEtag = require('etag')
 const serveBuffer = require('serve-buffer')
 
 const bbox = JSON.parse(process.argv.slice[3] || process.env.BBOX || 'null')
@@ -43,10 +44,17 @@ const toFull = differentialToFullDataset({
 })
 writer.pipe(toFull)
 
+let dump = Buffer.alloc(0)
+let timeModified = new Date()
+let etag = computeEtag(dump)
+toFull.on('change', () => {
+	dump = toFull.asFeedMessage()
+	timeModified = new Date()
+	etag = computeEtag(dump)
+})
+
 const server = createServer((req, res) => {
-	serveBuffer(req, res, toFull.asFeedMessage(), {
-		// todo: timeModified, etaf
-	})
+	serveBuffer(req, res, dump, {timeModified, etag})
 })
 server.listen(3000, (err) => {
 	if (!err) return;
