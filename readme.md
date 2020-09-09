@@ -17,10 +17,10 @@ This is an example project that demonstrates how to
 
 `hafas-gtfs-rt-server-example` expects a [Redis](https://redis.io/) server running on `127.0.0.1:6379` (default port), but you can set the `REDIS_URL` environment variable to change this.
 
-Specific the bounding box to be observed as JSON:
+Specify the bounding box to be observed as JSON:
 
-```json
-{"north": 52.52, "west": 13.36, "south": 52.5, "east": 13.39}
+```shell
+BBOX='{"north": 52.52, "west": 13.36, "south": 52.5, "east": 13.39}'
 ```
 
 ### via Docker
