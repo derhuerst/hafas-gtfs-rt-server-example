@@ -53,8 +53,22 @@ toFull.on('change', () => {
 	etag = computeEtag(dump)
 })
 
+let stats = null
+monitor.on('stats', (newStats) => {
+	stats = newStats
+})
+
 const server = createServer((req, res) => {
-	serveBuffer(req, res, dump, {timeModified, etag})
+	const path = new URL(req.url, 'http://localhost').pathname
+	if (path === '/') {
+		serveBuffer(req, res, dump, {timeModified, etag})
+	} else if (path === '/stats') {
+		res.setHeader('content-type', 'application/json')
+		res.end(JSON.stringify(stats))
+	} else {
+		res.statusCode = 404
+		res.end('nope')
+	}
 })
 server.listen(3000, (err) => {
 	if (!err) return;
