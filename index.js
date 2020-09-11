@@ -10,6 +10,7 @@ const computeEtag = require('etag')
 const serveBuffer = require('serve-buffer')
 
 const bbox = JSON.parse(process.argv.slice[3] || process.env.BBOX || 'null')
+const concurrency = parseInt(process.env.CONCURRENCY || '8')
 
 const onError = (err) => {
 	console.error(err)
@@ -30,10 +31,13 @@ const worker = createMonitorWorker(hafas, bbox, (type, data, moreData) => {
 	else if (type === 'position') {
 		writePosition(data, moreData)
 	}
+}, {
+	concurrency,
 })
 worker.on('error', onError)
 
 const monitor = createMonitor(bbox, {
+	concurrency,
 	interval: 30_000, // 30s
 })
 monitor.on('error', onError)
