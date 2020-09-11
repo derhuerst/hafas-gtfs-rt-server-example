@@ -34,7 +34,7 @@ const worker = createMonitorWorker(hafas, bbox, (type, data, moreData) => {
 worker.on('error', onError)
 
 const monitor = createMonitor(bbox, {
-	interval: 10_000, // 10s
+	interval: 30_000, // 30s
 })
 monitor.on('error', onError)
 monitor.start()

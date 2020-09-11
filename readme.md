@@ -1,6 +1,6 @@
 # hafas-gtfs-rt-server-example
 
-**Using [`hafas-client`](https://github.com/public-transport/hafas-client), [`hafas-monitor-trips`](https://github.com/derhuerst/hafas-monitor-trips) & [`hafas-gtfs-rt-feed`](https://github.com/derhuerst/hafas-gtfs-rt-feed) as a GTFS-RT server.**
+**Expose a [HAFAS endpoint](https://github.com/public-transport/hafas-client/blob/43bd9cf65bc181f97ba4eefb75e26080a654a041/readme.md#background) as a [GTFS Realtime (GTFS-RT)](https://gtfs.org/reference/realtime/v2/) server.**
 
 ![ISC-licensed](https://img.shields.io/github/license/derhuerst/hafas-gtfs-rt-server-example.svg)
 [![chat with me on Gitter](https://img.shields.io/badge/chat%20with%20me-on%20gitter-512e92.svg)](https://gitter.im/derhuerst)
