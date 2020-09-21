@@ -1,6 +1,7 @@
 'use strict'
 
 const ProxyAgent = require('https-proxy-agent')
+const {Agent} = require('https')
 const roundRobin = require('@derhuerst/round-robin-scheduler')
 const createGtfsRtWriter = require('hafas-gtfs-rt-feed/writer')
 const vbbProfile = require('hafas-client/p/vbb')
@@ -24,6 +25,15 @@ if (proxies) {
 		agent: agentPool.get(),
 	})
 	// todo: kick unavailable proxies?
+} else if (process.env.LOCAL_ADDRESS) {
+	const agents = process.env.LOCAL_ADDRESS
+	.split(',')
+	.map(localAddress => new Agent({localAddress}))
+	const agentPool = roundRobin(agents)
+	transformReq = (_, req) => ({
+		...req,
+		agent: agentPool.get(),
+	})
 }
 
 const onError = (err) => {
