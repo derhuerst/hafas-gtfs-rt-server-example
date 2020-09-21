@@ -1,7 +1,9 @@
 'use strict'
 
 const createGtfsRtWriter = require('hafas-gtfs-rt-feed/writer')
-const createThrottledHafas = require('vbb-hafas/throttle')
+const vbbProfile = require('hafas-client/p/vbb')
+const withThrottling = require('hafas-client/throttle')
+const createHafas = require('hafas-client')
 const createMonitor = require('hafas-monitor-trips')
 const differentialToFullDataset = require('gtfs-rt-differential-to-full-dataset')
 const {createServer} = require('http')
@@ -15,10 +17,9 @@ const onError = (err) => {
 	process.exit(1)
 }
 
-const hafas = createThrottledHafas('hafas-gtfs-rt-server-example', {
-	throttlingLimit: 25,
-	throttlingInterval: 1000,
-})
+const hafas = createHafas({
+	...withThrottling(vbbProfile, 25, 1000), // 25 req/s
+}, 'hafas-gtfs-rt-server-example')
 const monitor = createMonitor(hafas, bbox, {
 	fetchTripsInterval: 60_000, // 60s
 })
