@@ -1,5 +1,7 @@
 'use strict'
 
+const ProxyAgent = require('https-proxy-agent')
+const roundRobin = require('@derhuerst/round-robin-scheduler')
 const createGtfsRtWriter = require('hafas-gtfs-rt-feed/writer')
 const vbbProfile = require('hafas-client/p/vbb')
 const withThrottling = require('hafas-client/throttle')
@@ -12,6 +14,18 @@ const serveBuffer = require('serve-buffer')
 
 const bbox = JSON.parse(process.argv.slice[3] || process.env.BBOX || 'null')
 
+let transformReq = (_, req) => req
+const proxies = process.env.HTTPS_PROXY || process.env.HTTP_PROXY
+if (proxies) {
+	const agents = proxies.split(',').map(p => new ProxyAgent(p))
+	const agentPool = roundRobin(agents)
+	transformReq = (_, req) => ({
+		...req,
+		agent: agentPool.get(),
+	})
+	// todo: kick unavailable proxies?
+}
+
 const onError = (err) => {
 	console.error(err)
 	process.exit(1)
@@ -19,6 +33,7 @@ const onError = (err) => {
 
 const hafas = createHafas({
 	...withThrottling(vbbProfile, 25, 1000), // 25 req/s
+	transformReq,
 }, 'hafas-gtfs-rt-server-example')
 const monitor = createMonitor(hafas, bbox, {
 	fetchTripsInterval: 60_000, // 60s
