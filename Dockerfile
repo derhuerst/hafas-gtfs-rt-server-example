@@ -1,4 +1,4 @@
-FROM node:alpine as builder
+FROM node:16.8.0-alpine3.13 as builder
 WORKDIR /app
 
 RUN apk add --update git bash
@@ -6,7 +6,7 @@ RUN apk add --update git bash
 ADD package.json /app
 RUN npm install --production
 
-FROM node:alpine
+FROM node:16.8.0-alpine3.13
 WORKDIR /app
 
 EXPOSE 3000
